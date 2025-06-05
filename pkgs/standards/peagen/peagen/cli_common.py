@@ -62,6 +62,46 @@ class PathOrURI(str):
         # expand user and resolve relative path, return the *plain* path
         p = pathlib.Path(value).expanduser().resolve()
         return str(p)  # no file:// prefix
+    
+# ─────────────────────────────────────────────────────────────────────────────
+# PathOrURI Click Type for Typer compatibility
+# ─────────────────────────────────────────────────────────────────────────────
+
+class PathOrURIParamType(click.ParamType):
+    """Custom Click parameter type for PathOrURI to make it work with Typer."""
+    name = "path_or_uri"
+    
+    def convert(self, value, param, ctx):
+        """Convert string input to PathOrURI object."""
+        if value is None:
+            return None
+        
+        if isinstance(value, PathOrURI):
+            return value
+            
+        try:
+            return PathOrURI(value)
+        except Exception as e:
+            self.fail(f"Invalid path or URI '{value}': {e}", param, ctx)
+
+# Instance for use in commands
+PATH_OR_URI = PathOrURIParamType()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Helper function for backward compatibility
+# ─────────────────────────────────────────────────────────────────────────────
+
+def PathOrURIArgument(default=..., **kwargs):
+    """Helper to create PathOrURI arguments with proper type conversion."""
+    if 'click_type' not in kwargs:
+        kwargs['click_type'] = PATH_OR_URI
+    return typer.Argument(default, **kwargs)
+
+def PathOrURIOption(default=None, **kwargs):
+    """Helper to create PathOrURI options with proper type conversion."""
+    if 'click_type' not in kwargs:
+        kwargs['click_type'] = PATH_OR_URI
+    return typer.Option(default, **kwargs)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

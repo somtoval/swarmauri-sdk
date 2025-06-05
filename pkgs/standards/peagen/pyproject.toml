@@ -6,7 +6,7 @@ authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/swarmauri/swarmauri-sdk/pkgs/standards/peagen/peagen"
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.11,<3.13"
 classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.10",
@@ -30,6 +30,7 @@ dependencies = [
     "swarmauri",
     "swarmauri_prompt_j2prompttemplate",
     "pika",
+    "jsonschema",
 ]
 
 

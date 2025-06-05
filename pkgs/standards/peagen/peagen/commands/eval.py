@@ -8,7 +8,7 @@ from typing import Optional
 
 import typer
 
-from peagen.cli_common import PathOrURI, temp_workspace, load_peagen_toml
+from peagen.cli_common import PathOrURI, temp_workspace, load_peagen_toml, PathOrURIArgument
 from peagen.plugin_registry import registry
 from peagen.eval import DefaultEvaluatorPool
 from swarmauri_standard.programs.Program import Program
@@ -19,7 +19,7 @@ eval_app = typer.Typer(help="Evaluate programs using an EvaluatorPool.")
 
 @eval_app.command("eval")
 def eval_cmd(
-    workspace_uri: PathOrURI = typer.Argument(..., help="Workspace path or URI"),
+    workspace_uri: PathOrURI = PathOrURIArgument(..., help="Workspace path or URI"),
     program_glob: str = typer.Argument("**/*.prog", help="Program glob pattern"),
     pool: Optional[str] = typer.Option(None, "--pool", "-p"),
     config: Optional[Path] = typer.Option(None, "--config", "-c", exists=True),
